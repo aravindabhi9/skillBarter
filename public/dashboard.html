@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – Skill Barter</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">SkillBarter</div>
+    <div id="searchContainer">
+      <input type="text" id="searchInput" placeholder="Search skills..." autocomplete="off" />
+      <ul id="suggestions" class="suggestion-box"></ul>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><button onclick="location.href='/add-skill.html'">Add Skill</button></li>
+      
+      <li><a href="/profile.html">Profile</a></li>
+    </ul>
+  </nav>
+
+  <!-- Welcome -->
+  <section class="welcome-section">
+    <h1>Welcome 👋</h1>
+    <p>Explore new skill exchange opportunities today!</p>
+  </section>
+
+  <!-- Cards -->
+  <section class="cards-container">
+    <div class="card"><a href="/my-skills.html"><h3>My Skills</h3></a></div>
+    <div class="card" id="provider-chats-section">
+      <h3>My Learners (Chats)</h3>
+      <div id="provider-chats">Loading...</div>
+    </div>
+    <div class="card" id="notifications-section">
+      <h3>Booking Requests</h3>
+      <div id="notification-list">Loading...</div>
+    </div>
+    <div class="card" id="my-bookings-section">
+      <h3>My Bookings</h3>
+      <div id="my-bookings">Loading...</div>
+    </div>
+    
+    <div class="card" id="provider-rating-card" style="display:none;">
+      <h3>Profile Rating</h3>
+      <div id="dashboard-profile-rating" style="font-size:1.2rem; margin: 10px 0 0 0;"></div>
+    </div>
+  </section>
+
+  <section id="results" class="search-results"></section>
+
+  <footer class="footer">
+    <p>&copy; 2025 SkillBarter. All rights reserved.</p>
+  </footer>
+
+  <script src="/js/dashboard.js" defer></script>
+</body>
+</html>

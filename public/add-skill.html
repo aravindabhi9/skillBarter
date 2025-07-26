@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Skill - Skill Barter</title>
+  <link rel="stylesheet" href="/css/form.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Add New Skill</h2>
+    <form id="add-skill-form">
+      <div class="form-group">
+        <input type="text" id="skillName" placeholder=" " required />
+        <label for="skillName">Skill Name</label>
+      </div>
+      <div class="form-group">
+        <textarea id="description" placeholder=" " required></textarea>
+        <label for="description">Description</label>
+      </div>
+      <div class="form-group">
+        <select id="mode" required>
+          <option value="">Select Mode</option>
+          <option value="free">Free</option>
+          <option value="paid">Paid</option>
+          <option value="barter">Barter</option>
+        </select>
+      </div>
+      <div class="form-group" id="price-group" style="display: none;">
+        <input type="number" id="price" placeholder=" " />
+        <label for="price">Price (₹)</label>
+      </div>
+      <div class="form-group" id="barter-group" style="display: none;">
+        <input type="text" id="barterSkillWanted" placeholder=" " />
+        <label for="barterSkillWanted">Skill Wanted in Barter</label>
+      </div>
+      <button type="submit" class="btn">Post Skill</button>
+    </form>
+  </div>
+  <script src="/js/add-skill.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!-- public/edit-skill.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Edit Skill</title>
+  <link rel="stylesheet" href="/dashboard/dashboard.css">
+
+</head>
+<body>
+  <form id="editSkillForm">
+    <input type="text" name="skillName" id="skillName" placeholder="Skill you offer" required />
+
+    <label>
+      <input type="radio" name="mode" value="free" /> Free
+    </label>
+    <label>
+      <input type="radio" name="mode" value="paid" /> Paid
+    </label>
+    <label>
+      <input type="radio" name="mode" value="barter" /> Barter
+    </label>
+
+    <input type="number" id="priceField" name="price" placeholder="Price" style="display:none;" />
+    <input type="text" id="barterField" name="barterSkillWanted" placeholder="What do you want in return?" style="display:none;" />
+
+    <textarea name="description" id="description" placeholder="Skill description"></textarea>
+
+    <button type="submit">Update Skill</button>
+  </form>
+
+  <script>
+    const modeRadios = document.querySelectorAll('input[name="mode"]');
+    const priceField = document.getElementById('priceField');
+    const barterField = document.getElementById('barterField');
+
+    modeRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        priceField.style.display = radio.value === 'paid' ? 'block' : 'none';
+        barterField.style.display = radio.value === 'barter' ? 'block' : 'none';
+      });
+    });
+
+    const skillId = localStorage.getItem("editSkillId");
+
+    // Fetch skill details
+    async function fetchSkill() {
+      const res = await fetch(`/api/skills/${skillId}`, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+      const skill = await res.json();
+      document.getElementById("skillName").value = skill.skillName;
+      document.getElementById("description").value = skill.description;
+      document.querySelector(`input[value="${skill.mode}"]`).checked = true;
+
+      if (skill.mode === "paid") {
+        priceField.style.display = "block";
+        priceField.value = skill.price;
+      } else if (skill.mode === "barter") {
+        barterField.style.display = "block";
+        barterField.value = skill.barterSkillWanted;
+      }
+    }
+
+    fetchSkill();
+
+    // Submit updated skill
+    document.getElementById("editSkillForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch(`/api/skills/${skillId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        alert("✅ Skill updated successfully!");
+        window.location.href = "/my-skills.html";
+      } else {
+        alert("❌ Failed to update skill.");
+      }
+    });
+  </script>
+</body>
+</html>

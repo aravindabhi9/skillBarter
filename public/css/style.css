@@ -1,0 +1,56 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar {
+  background: #2c3e50;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-links button {
+  margin-left: 1rem;
+  padding: 0.5rem 1rem;
+  background: #3498db;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.form-container {
+  margin: 5% auto;
+  padding: 2rem;
+  background: #fff;
+  width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input, button {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.6rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #2ecc71;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+}
+
+.skill-card {
+  background: #fff;
+  padding: 1rem;
+  margin: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

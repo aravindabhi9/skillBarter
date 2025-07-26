@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skill Barter – Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Sign Up for Skill Barter</h2>
+    <form id="signup-form" style="max-width: 500px; margin: 0 auto;">
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email address" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" placeholder="Enter your phone number" required />
+      </div>
+      <div class="form-group">
+        <label for="whatsapp">WhatsApp Number</label>
+        <input type="text" id="whatsapp" name="whatsapp" placeholder="Enter your WhatsApp number" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required />
+      </div>
+      <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Create Account</button>
+    </form>
+    <style>
+      .form-group {
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .form-group label {
+        margin-bottom: 6px;
+        font-weight: 500;
+        font-size: 1rem;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem;
+        background: #fff;
+      }
+    </style>
+    <div class="bottom-text">
+      Already have an account? <a href="/login.html">Login here</a>
+    </div>
+  </div>
+  <script src="/js/signup.js" defer></script>
+</body>
+</html>

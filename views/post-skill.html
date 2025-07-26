@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Post Your Skill</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    form { max-width: 500px; margin: auto; }
+    input, textarea, select { width: 100%; margin: 10px 0; padding: 8px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h2>Post Your Skill</h2>
+  <form id="skillForm">
+    <input type="text" name="title" placeholder="Skill Title" required />
+    <textarea name="description" placeholder="Description"></textarea>
+
+    <select name="mode" id="mode" required>
+      <option value="">Select Mode</option>
+      <option value="free">Free</option>
+      <option value="paid">Paid</option>
+      <option value="barter">Barter</option>
+    </select>
+
+    <input type="number" name="price" id="priceField" class="hidden" placeholder="Enter price in ₹" />
+    <input type="text" name="expectedSkill" id="barterField" class="hidden" placeholder="What do you expect in return?" />
+
+    <input type="email" name="postedBy" placeholder="Your Email (temp)" required />
+    <button type="submit">Post Skill</button>
+  </form>
+
+  <script>
+    const modeSelect = document.getElementById("mode");
+    const priceField = document.getElementById("priceField");
+    const barterField = document.getElementById("barterField");
+
+    modeSelect.addEventListener("change", () => {
+      priceField.classList.add("hidden");
+      barterField.classList.add("hidden");
+
+      if (modeSelect.value === "paid") priceField.classList.remove("hidden");
+      if (modeSelect.value === "barter") barterField.classList.remove("hidden");
+    });
+
+    document.getElementById("skillForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = Object.fromEntries(new FormData(e.target));
+      const res = await fetch("/api/skills/post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+      });
+      const result = await res.json();
+      alert(result.message || result.error);
+    });
+  </script>
+</body>
+</html>

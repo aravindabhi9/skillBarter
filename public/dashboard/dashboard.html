@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Skill Barter Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <!-- 🌐 Navbar -->
+  <nav class="navbar">
+    <div class="logo">SkillBarter</div>
+
+    <!-- 🔍 Search Bar -->
+    <div id="searchContainer">
+      <input type="text" id="searchInput" placeholder="Search skills..." autocomplete="off" />
+      <ul id="suggestions" class="suggestion-box"></ul>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><button onclick="location.href='/add-skill.html'">Add Skill</button></li>
+      <li><a href="/my-skills.html">Skills</a></li>
+      <li><a href="#">Messages</a></li>
+      <li><a href="#">Profile</a></li>
+    </ul>
+  </nav>
+
+  <!-- 👋 Welcome Section -->
+  <section class="welcome-section">
+    <h1>Welcome, Aravind 👋</h1>
+    <p>Explore new skill exchange opportunities today!</p>
+   <button id="find-barter-btn">🔁 Find Barter Match</button>
+  </section>
+
+  <!-- 📦 Dashboard Cards -->
+  <section class="cards-container">
+    <div class="card">
+      <a href="/my-skills.html">
+        <div class="card">
+          <h3><strong>My Skills</strong></h3>
+        </div>
+      </a>
+    </div>
+
+    <div class="card" id="notifications-section">
+      <h3>Booking Requests</h3>
+      <div id="notification-list">Loading...</div>
+    </div>
+
+   
+    <div class="card">
+      <h3>Profile Rating</h3>
+      <p>⭐ 4.8/5</p>
+    </div>
+  </section>
+
+  <!-- 🔁 Barter Match Results -->
+  <section id="barter-matches" class="search-results"></section>
+
+  <!-- 📌 Footer -->
+  <footer class="footer">
+    <p>&copy; 2025 SkillBarter. All rights reserved.</p>
+  </footer>
+
+  <!-- 🧠 JS Logic -->
+  <script>
+  document.getElementById("find-barter-btn").addEventListener("click", async () => {
+  const wanted = prompt("Which skill do you want to learn?");
+  const offered = prompt("Which skill can you offer in return?");
+
+  if (!wanted || !offered) return alert("Both fields are required");
+
+  const res = await fetch("/api/skills/barter-matches", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ wantedSkill: wanted, offeredSkill: offered })
+  });
+
+  const data = await res.json();
+  const container = document.getElementById("barter-matches");
+  container.innerHTML = "";
+
+  if (!data.matches.length) {
+    container.innerHTML = "<p>No matches found.</p>";
+  } else {
+    data.matches.forEach(match => {
+      const div = document.createElement("div");
+      div.className = "match-card";
+      div.innerHTML = `
+        <h4>${match.skillName}</h4>
+        <p><strong>Teaches:</strong> ${match.skillName}</p>
+        <p><strong>Wants:</strong> ${match.barterSkillWanted}</p>
+        <p><strong>Provider:</strong> ${match.User.name}</p>
+        <p><strong>Email:</strong> ${match.User.email}</p>
+        <button onclick="bookSkill(${match.id})">📩 Book</button>
+      `;
+      container.appendChild(div);
+    });
+  }
+});
+
+
+    // Other existing logic remains unchanged
+    async function bookSkill(skillId) {
+      const token = localStorage.getItem("token");
+
+      try {
+        const res = await fetch(`/api/bookings/book/${skillId}`, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
+
+        const data = await res.json();
+        alert(data.message || "📩 Booking sent!");
+      } catch (err) {
+        alert("❌ Booking failed");
+        console.error("Booking error:", err);
+      }
+    }
+
+    async function loadBookingRequests() {
+      const token = localStorage.getItem("token");
+      const response = await fetch("/api/bookings/requests", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      const requests = await response.json();
+      const list = document.getElementById("notification-list");
+      list.innerHTML = "";
+
+      requests.forEach((booking) => {
+        const div = document.createElement("div");
+        const skillName = booking.Skill?.skillName || "Unknown Skill";
+        const requester = booking.User?.name || "Someone";
+
+        div.innerHTML = `
+          <p><strong>${requester}</strong> requested to learn <strong>${skillName}</strong></p>
+          <button onclick="respondToBooking(${booking.id}, true)">✅ Accept</button>
+          <button onclick="respondToBooking(${booking.id}, false)">❌ Reject</button>
+          <hr />
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function respondToBooking(bookingId, accept) {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`/api/bookings/respond/${bookingId}`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ status: accept ? "accepted" : "rejected" })
+      });
+
+      const data = await response.json();
+      alert(data.message || "Response sent");
+      loadBookingRequests();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadBookingRequests();
+    });
+
+    // Socket.io setup
+    const socket = io();
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      socket.emit("join", userId);
+    }
+  </script>
+</body>
+</html>

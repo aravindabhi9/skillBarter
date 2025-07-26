@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile - Skill Barter</title>
+  <link rel="stylesheet" href="/css/form.css">
+</head>
+<body>
+  <div class="container">
+    <h2>👤 My Profile</h2>
+    <div style="margin-bottom: 18px;">
+      <h3 style="color: #6c2eb7; margin-bottom: 6px;">Profile Rating</h3>
+      <div id="profile-rating" style="font-size: 1.2rem; margin-bottom: 10px;"></div>
+    </div>
+    <form id="profile-form">
+      <div class="form-group">
+        <input type="text" id="name" name="name" placeholder=" " required />
+        <label for="name">Full Name</label>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" name="email" placeholder=" " disabled />
+        <label for="email">Email</label>
+      </div>
+      <div class="form-group">
+        <input type="text" id="phone" name="phone" placeholder=" " />
+        <label for="phone">Phone Number</label>
+      </div>
+      <div class="form-group">
+        <input type="text" id="whatsapp" name="whatsapp" placeholder=" " />
+        <label for="whatsapp">WhatsApp Number</label>
+      </div>
+      <button type="submit" class="btn">Update Profile</button>
+    </form>
+    <p><a href="/dashboard.html">← Back to Dashboard</a></p>
+  </div>
+  <script src="/js/profile.js" defer></script>
+</body>
+</html>

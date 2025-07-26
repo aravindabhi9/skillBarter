@@ -1,0 +1,42 @@
+<!-- chat.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SkillBarter Chat</title>
+  <link rel="stylesheet" href="chat.css">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="users-list" id="usersList"></div>
+    <div class="chat-box">
+      <div id="chatMessages"></div>
+      <input type="text" id="chatInput" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const socket = io();
+    const userId = localStorage.getItem("userId");
+    const receiverId = localStorage.getItem("chatWith"); // select from UI in future
+
+    socket.emit("join", userId);
+    socket.on("newMessage", (msg) => {
+      const msgBox = document.getElementById("chatMessages");
+      const p = document.createElement("p");
+      p.textContent = `${msg.senderId == userId ? "You" : "Them"}: ${msg.content}`;
+      msgBox.appendChild(p);
+    });
+
+    function sendMessage() {
+      const input = document.getElementById("chatInput");
+      const content = input.value;
+      if (content.trim()) {
+        socket.emit("sendMessage", { senderId: userId, receiverId, content });
+        input.value = "";
+      }
+    }
+  </script>
+</body>
+</html>
